@@ -23,7 +23,7 @@ def ordenar_archivos():
     ruta="C:/Users/Sergio/Documents"
 
     #crear carpetas si no existen
-    carpetas=["Documentos","Imagenes","PDFS","Hojas de calculo","Documentos de texto","Otros"]
+    carpetas=["Documentos","Imagenes","PDFS","Hojas de calculo","Documentos de texto","Presentaciones","Power BI","Otros"]
     for carpeta in carpetas:
         if not os.path.exists(os.path.join(ruta,carpeta)):
             os.makedirs(os.path.join(ruta,carpeta))
@@ -43,8 +43,12 @@ def ordenar_archivos():
                 shutil.move(ruta_archivo,os.path.join(ruta,"PDFS",archivo))
             elif extension in [".xls",".xlsx"]:
                 shutil.move(ruta_archivo,os.path.join(ruta,"Hojas de calculo",archivo))
+            elif extension in [".ppt",".pptx"]:
+                shutil.move(ruta_archivo,os.path.join(ruta,"Presentaciones",archivo))
             elif extension in [".txt"]:
                 shutil.move(ruta_archivo,os.path.join(ruta,"Documentos de texto",archivo))
+            elif extension in [".pbix"]:
+                shutil.move(ruta_archivo,os.path.join(ruta,"Power BI",archivo))
             else:
                 shutil.move(ruta_archivo,os.path.join(ruta,"Otros",archivo))
 
@@ -76,7 +80,7 @@ def detener_vigilancia():
     observador.stop()
     observador.join()
     ventana.quit()
-    
+
 ventana.deiconify()
 ventana.title("Organizador de Archivos")
 ventana.geometry("300x150")
