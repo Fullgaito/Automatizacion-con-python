@@ -4,8 +4,10 @@ Las subcarpetas se crean automáticamente si no existen."""
 import os 
 import shutil
 import time
+import threading
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+from tkinter import Tk,filedialog,Button,Label
 
 def esperar_archivo_libre(ruta_archivo,intentos=10,espera=0.5):
     for _ in range(intentos):
@@ -56,11 +58,36 @@ ordenar_archivos()
 manejador=MiManejador()
 observador=Observer()
 observador.schedule(manejador, path="C:/Users/Sergio/Documents", recursive=False)
-observador.start()
+#observador.start()
 
+def iniciar_vigilancia():
+    observador.start()
+"""""
 try:
     while True:
         time.sleep(1)
 except KeyboardInterrupt:
     observador.stop()
 observador.join()
+"""""
+ventana=Tk()
+
+def detener_vigilancia():
+    observador.stop()
+    observador.join()
+    ventana.quit()
+    
+ventana.deiconify()
+ventana.title("Organizador de Archivos")
+ventana.geometry("300x150")
+
+label=Label(ventana,text="Organizador de Archivos en Documentos")
+label.pack(pady=10)
+
+boton_detener=Button(ventana,text="Detener Vigilancia",command=detener_vigilancia)
+boton_detener.pack(pady=5)
+
+hilo_vigilancia=threading.Thread(target=iniciar_vigilancia)
+hilo_vigilancia.daemon=True
+hilo_vigilancia.start()
+ventana.mainloop()
